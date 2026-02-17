@@ -23,15 +23,18 @@ jobs:
           cache-dependency-path: backend/package-lock.json
 
       - name: Install dependencies
+        working-directory: ./backend
         run: npm ci
 
       - name: Run linter and tests
+        working-directory: ./backend
         run: |
           npm run lint --if-present
           npm run test --if-present
 
       # Step 3: Trigger the deployment on Render.
       - name: Trigger Deploy Hook on Render
+        working-directory: ./backend
         run: |
           curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
         # The -f flag makes the command fail if the HTTP request is not successful (e.g., 4xx or 5xx)
