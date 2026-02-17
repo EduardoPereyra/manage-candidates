@@ -1,0 +1,36 @@
+name: Desplegar en Render (Nest.js)
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    name: Call Deploy Hook of Render
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+
+      # Step 2: Optional. Here you could, for example, install Node,
+      # run 'npm run test' or 'npm run lint' to ensure everything is correct BEFORE deploying.
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20" # Use the version of your project
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run linter and tests
+        run: |
+          npm run lint --if-present
+          npm run test --if-present
+
+      # Step 3: Trigger the deployment on Render.
+      - name: Trigger Deploy Hook on Render
+        run: |
+          curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
+        # The -f flag makes the command fail if the HTTP request is not successful (e.g., 4xx or 5xx)
