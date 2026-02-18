@@ -1,0 +1,39 @@
+<form [formGroup]="candidateByFileForm">
+  <h1>Add Candidate By File</h1>
+  <mat-form-field>
+    <mat-label>Name</mat-label>
+    <input type="name" matInput formControlName="name" placeholder="Ex. John" />
+    <mat-error> Name is <strong>required</strong> </mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Surname</mat-label>
+    <input
+      type="surname"
+      matInput
+      formControlName="surname"
+      placeholder="Ex. Doe"
+    />
+    <mat-error> Surname is <strong>required</strong> </mat-error>
+  </mat-form-field>
+  <button mat-stroked-button color="secondary" (click)="downloadTemplate()">
+    Download Template
+  </button>
+  <div class="input-file-container">
+    <button #file mat-flat-button color="accent">Attach file</button>
+    <div>
+      <input
+        #myInput
+        formControlName="file"
+        id="file"
+        name="file"
+        (change)="onFileSelected($event)"
+        type="file"
+        accept=".xlsx, .xls"
+      />
+      <p>{{ candidateFile?.name }}</p>
+    </div>
+  </div>
+</form>
+<button mat-raised-button (click)="addCandidateByFile()" class="add-button">
+  Add
+</button>

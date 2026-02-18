@@ -1,0 +1,15 @@
+.table-container {
+  margin: 30px;
+  width: 80%;
+
+  table {
+    .delete-button {
+      margin-left: 10px;
+    }
+  }
+
+  .add-containers {
+    display: flex;
+    margin-top: 40px;
+  }
+}
