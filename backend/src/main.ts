@@ -7,10 +7,7 @@ async function bootstrap() {
 
   // Habilitar CORS para el frontend de Angular
   app.enableCors({
-    origin: [
-      'https://candidate-management-delta.vercel.app',
-      'http://localhost:4200',
-    ],
+    origin: ['https://manage-candidates.vercel.app', 'http://localhost:4200'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
