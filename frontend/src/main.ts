@@ -1,22 +1,23 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { HttpClient } from '@angular/common/http';
 import { appConfig } from './app/app.config';
 import { AppComponent } from './app/app.component';
 import { environment } from './environments/environment';
-import { CandidatesService } from './app/services/candidates.service';
 
-// Call health endpoint before bootstrapping
-const injector = bootstrapApplication(AppComponent, appConfig).then((appRef) =>
-  appRef.injector.get(CandidatesService),
-);
-
-injector.then((candidatesService) => {
-  candidatesService.health().subscribe({
-    next: () => {
+// Check health before bootstrapping the app
+const checkHealth = async () => {
+  try {
+    const response = await fetch(`${environment.apiUrl}/api/health`);
+    if (response.ok) {
       console.log('Health check passed');
-    },
-    error: () => {
-      console.error('Health check failed, server might be down.');
-    },
-  });
+      return true;
+    }
+  } catch (error) {
+    console.error('Health check failed, server might be down.', error);
+  }
+  return false;
+};
+
+// Wait for health check before bootstrapping
+checkHealth().then(() => {
+  bootstrapApplication(AppComponent, appConfig);
 });
